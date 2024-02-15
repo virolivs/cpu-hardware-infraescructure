@@ -87,6 +87,7 @@ module     ctrl_unit (
     parameter ST_BNE   = 6'b011101;
     parameter ST_BLE   = 6'b011110;
     parameter ST_BGT   = 6'b010111;
+    //parameter ST_SRAM   = 6'b010111;s
     parameter ST_LB    = 6'b100000;
     parameter ST_LH    = 6'b100001;
     parameter ST_LW    = 6'b100011;
@@ -136,6 +137,7 @@ module     ctrl_unit (
     parameter BNE   = 6'b000101;
     parameter BLE   = 6'b000110;
     parameter BGT   = 6'b000111;
+    parameter SRAM  = 6'b000001;
     parameter LB    = 6'b100000;
     parameter LH    = 6'b100001;
     parameter LW    = 6'b100011;
@@ -408,6 +410,9 @@ always @(posedge clk) begin
                         end
                         BGT: begin
                             STATE = ST_BGT;
+                        end
+                        SRAM: begin
+                            STATE = ST_SRAM;
                         end
                         LB: begin
                             STATE = ST_LB;
@@ -1927,6 +1932,153 @@ always @(posedge clk) begin
                     end
                     COUNTER = 3'b000;
                     STATE = ST_COMMON;
+                end
+            end
+            ST_SRAM: begin
+                if (COUNTER == 3'b000) begin
+                    STATE           = ST_SRAM;
+                    COUNTER         = COUNTER + 1;
+                    rst_out         = 1'b0;
+
+                    MEM_write       = 1'b0;        
+                    MDR_write       = 1'b0;
+                    IR_write        = 1'b0;       
+                    REG_write       = 1'b0;
+                    AB_write        = 1'b0;
+                    ALU_Out_write   = 1'b0;
+                    EPC_write       = 1'b0;
+                    ALU_src_A       = 1'b1;    //
+                    ALU_src_B       = 2'b10;    /// 1
+                    ALU_ctrl        = 3'b001;   ///      
+                    IorD            = 3'b000;   ///
+                    EXC_control     = 2'b00;
+                    HI_ctrl         = 1'b0;
+                    LO_ctrl         = 1'b0;         
+                    MEM_to_REG      = 4'b0000;
+                    REG_dest        = 3'b001;
+                    DIV_ctrl        = 1'b0;
+                    DIV_type        = 1'b0;
+                    MULT_ctrl       = 1'b0;
+                    shift_REG_ctrl  = 3'b000;
+                    LS_ctrl         = 3'b000;
+                    shift_AMT       = 1'b0;
+                    shift_SRC       = 1'b0;
+                end
+                else if (COUNTER == 3'b001 || COUNTER == 3'b010) begin
+                    STATE = ST_SRAM;
+                    COUNTER = COUNTER + 1;
+                    rst_out = 1'b0;
+
+                    MEM_write = 1'b0;
+                    MDR_write = 1'b0;
+                    IR_write = 1'b0;
+                    REG_write = 1'b0;       ///
+                    AB_write = 1'b0;
+                    ALU_Out_write = 1'b0;
+                    EPC_write     = 1'b0;
+                    ALU_src_A     = 1'b0;
+                    ALU_src_B     = 1'b0;
+                    ALU_ctrl      = 3'B000;
+                    IorD          = 3'b001;
+                    EXC_control   = 3'b000;
+                    HI_ctrl       = 1'b0;
+                    LO_ctrl = 1'b0;
+                    MEM_to_REG = 4'b0000;    ///
+                    REG_dest   = 3'b000;    ///
+                    DIV_ctrl = 1'b0;
+                    DIV_type = 1'b0;
+                    MULT_ctrl = 1'b0;
+                    LS_ctrl = 3'b011;
+                    shift_REG_ctrl = 3'b000;
+                    shift_AMT = 1'b0;
+                    shift_SRC = 1'b0;
+                end
+                else if (COUNTER == 3'b011) begin
+                    STATE = ST_SRAM;
+                    COUNTER = COUNTER + 1;
+                    rst_out = 1'b0;
+
+                    MEM_write = 1'b0;
+                    MDR_write = 1'b0;
+                    IR_write = 1'b0;
+                    REG_write = 1'b0;       
+                    AB_write = 1'b0;
+                    ALU_Out_write = 1'b0;
+                    EPC_write     = 1'b0;
+                    ALU_src_A     = 1'b0;
+                    ALU_src_B     = 1'b0;
+                    ALU_ctrl      = 3'B000;
+                    IorD          = 3'b001; ///
+                    EXC_control   = 3'b000;
+                    HI_ctrl       = 1'b0;
+                    LO_ctrl = 1'b0;
+                    MEM_to_REG = 4'b0000;    ///
+                    REG_dest   = 3'b000;    ///
+                    DIV_ctrl = 1'b0;
+                    DIV_type = 1'b0;
+                    MULT_ctrl = 1'b0;
+                    LS_ctrl = 3'b001;
+                    shift_REG_ctrl = 3'b001; //
+                    shift_AMT = 1'b0; ///
+                    shift_SRC = 1'b1; ///
+                end
+                else if (COUNTER == 3'b100) begin
+                    STATE = ST_SRAM;
+                    COUNTER = COUNTER + 1;
+                    rst_out = 1'b0;
+
+                    MEM_write = 1'b0;
+                    MDR_write = 1'b0;
+                    IR_write = 1'b0;
+                    REG_write = 1'b0;       
+                    AB_write = 1'b0;
+                    ALU_Out_write = 1'b0;
+                    EPC_write     = 1'b0;
+                    ALU_src_A     = 1'b0;
+                    ALU_src_B     = 1'b0;
+                    ALU_ctrl      = 3'B000;
+                    IorD          = 3'b000; 
+                    EXC_control   = 3'b000;
+                    HI_ctrl       = 1'b0;
+                    LO_ctrl = 1'b0;
+                    MEM_to_REG = 4'b0110;    ///
+                    REG_dest   = 3'b000;    
+                    DIV_ctrl = 1'b0;
+                    DIV_type = 1'b0;
+                    MULT_ctrl = 1'b0;
+                    LS_ctrl = 3'b000;
+                    shift_REG_ctrl = 3'b000;
+                    shift_AMT = 1'b0;
+                    shift_SRC = 1'b0;
+                end
+                else if (COUNTER == 3'b101) begin
+                    STATE = ST_COMMON;
+                    COUNTER = 6'b0;
+                    rst_out = 1'b0;
+
+                    MEM_write = 1'b0;
+                    MDR_write = 1'b0;
+                    IR_write = 1'b0;
+                    REG_write = 1'b1; ///       
+                    AB_write = 1'b0;
+                    ALU_Out_write = 1'b0;
+                    EPC_write     = 1'b0;
+                    ALU_src_A     = 1'b0;
+                    ALU_src_B     = 1'b0;
+                    ALU_ctrl      = 3'B000;
+                    IorD          = 3'b000; 
+                    EXC_control   = 3'b000;
+                    HI_ctrl       = 1'b0;
+                    LO_ctrl = 1'b0;
+                    MEM_to_REG = 4'b0000;    
+                    REG_dest   = 3'b000;    
+                    DIV_ctrl = 1'b0;
+                    DIV_type = 1'b0;
+                    MULT_ctrl = 1'b0;
+                    LS_ctrl = 3'b000;
+                    shift_REG_ctrl = 3'b000;
+                    shift_AMT = 1'b0;
+                    shift_SRC = 1'b0;
                 end
             end
             ST_LW: begin
