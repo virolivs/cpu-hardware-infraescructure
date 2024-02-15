@@ -520,7 +520,7 @@ always @(posedge clk) begin
                     else if (COUNTER == 3'b001) begin
                         STATE           = ST_COMMON;
                         COUNTER         = 3'b000;
-                                 = 1'b0;
+                        rst_out         = 1'b0;
 
                         PC_write        = 1'b0; 
                         MEM_write       = 1'b0;       
