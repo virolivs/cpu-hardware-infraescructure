@@ -78,6 +78,7 @@ module     ctrl_unit (
     parameter ST_SRL = 6'b000010;
     parameter ST_BREAK = 6'b001101;
     parameter ST_RTE = 6'b010011;
+    // parameter ST_XCHG = 6'b010011;
 
     parameter ST_ADDI   = 6'b111101;
     parameter ST_ADDIU = 6'b001001;
@@ -125,6 +126,7 @@ module     ctrl_unit (
     parameter SUB = 6'b100010;      
     parameter BREAK = 6'b001101;
     parameter RTE = 6'b010011;
+    parameter XCHG = 6’b000101;
 
     //type I
     parameter LUI   = 6'b001111;
@@ -374,6 +376,9 @@ always @(posedge clk) begin
                                 end
                                 RTE: begin
                                     STATE = ST_RTE;
+                                end
+                                XCHG: begin
+                                    STATE = ST_XCHG;
                                 end
                                 RESET: begin
                                     STATE = ST_RESET;
@@ -1483,6 +1488,106 @@ always @(posedge clk) begin
                     DIV_type        = 1'b0;
                     MULT_ctrl       = 1'b0;
                 end          
+            end
+            ST_XCHG: begin
+                if (COUNTER == 3'b000) begin
+                    STATE = ST_XCHG;
+                    COUNTER = COUNTER + 1;
+                    rst_out = 1'b0;
+
+                    // Loading registers
+                    PC_write        = 1'b0;    
+                    MEM_write       = 1'b0;       
+                    MDR_write       = 1'b0;
+                    IR_write        = 1'b0;       
+                    REG_write       = 1'b1;     ///
+                    AB_write        = 1'b0;
+                    ALU_Out_write   = 1'b0;  
+                    EPC_write       = 1'b0;
+                    ALU_ctrl        = 3'b000;
+                    ALU_src_A       = 1'b0; 
+                    ALU_src_B       = 2'b00;   
+                    PC_src          = 3'b000;
+                    IorD            = 3'b000;
+                    EXC_control     = 2'b00;
+                    HI_ctrl         = 1'b0;
+                    LO_ctrl         = 1'b0;         
+                    MEM_to_REG      = 4'b1000;   ///
+                    REG_dest        = 3'b000;   ///
+                    DIV_ctrl        = 1'b0;
+                    DIV_type        = 1'b0;
+                    MULT_ctrl = 1'b0;
+                    shift_REG_ctrl  = 3'b000;
+                    LS_ctrl         = 3'b000;
+                    shift_AMT       = 1'b0;
+                    shift_SRC       = 1'b0;   
+                    
+                end
+                else if (COUNTER == 3'b001) begin // wait
+                    STATE = ST_SLL;
+                    COUNTER = COUNTER + 1;
+                    rst_out = 1'b0;
+
+                    // não muda
+                    PC_write        = 1'b0;    
+                    MEM_write       = 1'b0;       
+                    MDR_write       = 1'b0;
+                    IR_write        = 1'b0;       
+                    REG_write       = 1'b1;     ///
+                    AB_write        = 1'b0;
+                    ALU_Out_write   = 1'b0;  
+                    EPC_write       = 1'b0;
+                    ALU_ctrl        = 3'b000;
+                    ALU_src_A       = 1'b0; 
+                    ALU_src_B       = 2'b00;   
+                    PC_src          = 3'b000;
+                    IorD            = 3'b000;
+                    EXC_control     = 2'b00;
+                    HI_ctrl         = 1'b0;
+                    LO_ctrl         = 1'b0;         
+                    MEM_to_REG      = 4'b1000;   ///
+                    REG_dest        = 3'b000;   ///
+                    DIV_ctrl        = 1'b0;
+                    DIV_type        = 1'b0;
+                    MULT_ctrl = 1'b0;
+                    shift_REG_ctrl  = 3'b000;
+                    LS_ctrl         = 3'b000;
+                    shift_AMT       = 1'b0;
+                    shift_SRC       = 1'b0; 
+                end
+                else if (COUNTER == 3'b010) begin
+                    STATE = ST_COMMON;
+                    COUNTER = 3'b000;
+                    rst_out = 1'b0;
+
+                    // writing registers
+                    PC_write        = 1'b0;    
+                    MEM_write       = 1'b0;       
+                    MDR_write       = 1'b0;
+                    IR_write        = 1'b0;       
+                    REG_write       = 1'b1;     ///
+                    AB_write        = 1'b0;
+                    ALU_Out_write   = 1'b0;  
+                    EPC_write       = 1'b0;
+                    ALU_ctrl        = 3'b000;
+                    ALU_src_A       = 1'b0; 
+                    ALU_src_B       = 2'b00;   
+                    PC_src          = 3'b000;
+                    IorD            = 3'b000;
+                    EXC_control     = 2'b00;
+                    HI_ctrl         = 1'b0;
+                    LO_ctrl         = 1'b0;         
+                    MEM_to_REG      = 4'b1001;   ///
+                    REG_dest        = 3'b100;   ///
+                    DIV_ctrl        = 1'b0;
+                    DIV_type        = 1'b0;
+                    MULT_ctrl = 1'b0;
+                    shift_REG_ctrl  = 3'b000;
+
+                    LS_ctrl         = 3'b000;
+                    shift_AMT       = 1'b0;
+                    shift_SRC       = 1'b0; 
+                end
             end
             ST_ADDI: begin
                 if (OF) begin
