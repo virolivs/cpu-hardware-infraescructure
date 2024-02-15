@@ -1,5 +1,5 @@
 module mux_MEM_to_REG (
-    input   wire    [2:0]   selector,
+    input   wire    [3:0]   selector,
     input   wire    [31:0]   data_0,
     input   wire    [31:0]   data_1,
     input   wire    [31:0]   data_2,
