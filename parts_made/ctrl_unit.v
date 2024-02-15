@@ -1955,7 +1955,7 @@ always @(posedge clk) begin
                     HI_ctrl         = 1'b0;
                     LO_ctrl         = 1'b0;         
                     MEM_to_REG      = 4'b0000;
-                    REG_dest        = 3'b001;
+                    REG_dest        = 3'b001; ///
                     DIV_ctrl        = 1'b0;
                     DIV_type        = 1'b0;
                     MULT_ctrl       = 1'b0;
@@ -2018,7 +2018,7 @@ always @(posedge clk) begin
                     DIV_type = 1'b0;
                     MULT_ctrl = 1'b0;
                     LS_ctrl = 3'b001;
-                    shift_REG_ctrl = 3'b001; //
+                    shift_REG_ctrl = 3'b001; ///
                     shift_AMT = 1'b0; ///
                     shift_SRC = 1'b1; ///
                 end
@@ -2047,7 +2047,7 @@ always @(posedge clk) begin
                     DIV_type = 1'b0;
                     MULT_ctrl = 1'b0;
                     LS_ctrl = 3'b000;
-                    shift_REG_ctrl = 3'b000;
+                    shift_REG_ctrl = 3'b100; ///
                     shift_AMT = 1'b0;
                     shift_SRC = 1'b0;
                 end
@@ -2070,13 +2070,13 @@ always @(posedge clk) begin
                     EXC_control   = 3'b000;
                     HI_ctrl       = 1'b0;
                     LO_ctrl = 1'b0;
-                    MEM_to_REG = 4'b0000;    
+                    MEM_to_REG = 4'b0110; //    
                     REG_dest   = 3'b000;    
                     DIV_ctrl = 1'b0;
                     DIV_type = 1'b0;
                     MULT_ctrl = 1'b0;
                     LS_ctrl = 3'b000;
-                    shift_REG_ctrl = 3'b000;
+                    shift_REG_ctrl = 3'b000; ///
                     shift_AMT = 1'b0;
                     shift_SRC = 1'b0;
                 end
